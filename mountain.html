@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Famous Peaks | PeakVista</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header (Exact same as your previous pages) -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <img src="images/logo.png" alt="Mountain Logo">
+                </a>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="trails.html">Trails</a></li>
+                    <li><a href="mountain.html" class="active">Mountain</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <a href="trails.html" class="btn">Explore</a>
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Subpage Banner Header -->
+    <section class="subpage-hero bg-mountain-hero">
+        <div class="subpage-overlay"></div>
+        <div class="subpage-hero-content">
+            <h1>Iconic World Summits</h1>
+            <p>Explore the geology, history, and raw scale of the planet's highest elevations.</p>
+        </div>
+    </section>
+
+       <!-- Mountain Profiles Explorer Section -->
+    <section class="mountain-section">
+        <div class="container mountain-list-container">
+            
+            <!-- PEAK 1: MOUNT EVEREST -->
+            <div class="mountain-profile-block">
+                <div class="mountain-media-column">
+                    <div class="mountain-showcase-frame">
+                        <img src="IMAGES/mountain 2.jpg" alt="Mount Everest peak">
+                    </div>
+                    <div class="stats-fact-sheet">
+                        <h3>Quick Profile</h3>
+                        <ul>
+                            <li><strong>Official Elevation:</strong> 8,848.86 meters</li>
+                            <li><strong>Continent Ridge:</strong> Asia (Himalayas)</li>
+                            <li><strong>First Ascent:</strong> 1953 (Hillary & Norgay)</li>
+                            <li><strong>Geological Type:</strong> Fold Mountain</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mountain-info-column">
+                    <span class="mountain-badge">Featured Peak</span>
+                    <h2>Mount Everest (Sagarmatha)</h2>
+                    <p class="mountain-intro-text">
+                        Rising majestically on the border between Nepal and China, Mount Everest stands as the undisputed highest mountain in the world. Formed by tectonic forces shifting continents millions of years ago, it remains the ultimate destination for mountaineering expeditions.
+                    </p>
+
+                    <div class="mountain-accordion">
+                        <div class="accordion-item active">
+                            <button class="accordion-header">Geological History <span>▼</span></button>
+                            <div class="accordion-content">
+                                <p>Everest consists of multiple layers of limestone, marble, and pelite rock formed beneath primordial oceans, which were pushed upward over 50 million years ago during the ongoing collision between the Indian and Eurasian tectonic plates.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-header">Climbing Logistics & Routes <span>▼</span></button>
+                            <div class="accordion-content">
+                                <p>The two main commercial pathways are the South Col route from Nepal and the North Ridge route from Tibet. Expeditions require months of heavy acclimatization to withstand the extreme thin air within the dangerous 'Death Zone' above 8,000 meters.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PEAK 2: MOUNT KILIMANJARO -->
+            <div class="mountain-profile-block">
+                <div class="mountain-media-column">
+                    <div class="mountain-showcase-frame">
+                        <img src="IMAGES/mountain 4.jpg" alt="Mount Kilimanjaro peak">
+                    </div>
+                    <div class="stats-fact-sheet">
+                        <h3>Quick Profile</h3>
+                        <ul>
+                            <li><strong>Official Elevation:</strong> 5,895 meters</li>
+                            <li><strong>Continent Ridge:</strong> Africa (Tanzania)</li>
+                            <li><strong>First Ascent:</strong> 1889 (Meyer & Purtscheller)</li>
+                            <li><strong>Geological Type:</strong> Stratovolcano</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mountain-info-column">
+                    <span class="mountain-badge" style="background-color: var(--clr-primary); color: white;">Highest Freestanding</span>
+                    <h2>Mount Kilimanjaro</h2>
+                    <p class="mountain-intro-text">
+                        Located in Tanzania, Kilimanjaro boasts the titles of both Africa's tallest peak and the tallest freestanding mountain system in the world. Because it doesn't belong to a traditional range, its snowy dome contrasts beautifully against the surrounding savannah.
+                    </p>
+
+                    <div class="mountain-accordion">
+                        <div class="accordion-item">
+                            <button class="accordion-header">Volcanic Formations <span>▼</span></button>
+                            <div class="accordion-content">
+                                <p>Kilimanjaro is a massive volcanic massif composed of three distinct volcanic cones: Shira, Mawenzi, and Kibo. While Shira and Mawenzi are extinct, Kibo is dormant and could potentially erupt again in the future.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-header">Trekking Trails <span>▼</span></button>
+                            <div class="accordion-content">
+                                <p>Unlike Everest, reaching Kilimanjaro's summit (Uhuru Peak) is a walk-up trek rather than a technical climb. Popular paths like the Machame and Marangu routes pass through five distinct ecosystem zones, from dense rainforest to arctic ice caps.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PEAK 3: MOUNT FUJI -->
+            <div class="mountain-profile-block">
+                <div class="mountain-media-column">
+                    <div class="mountain-showcase-frame">
+                        <img src="IMAGES/sunrise peak.jpg" alt="Mount Fuji peak">
+                    </div>
+                    <div class="stats-fact-sheet">
+                        <h3>Quick Profile</h3>
+                        <ul>
+                            <li><strong>Official Elevation:</strong> 3,776 meters</li>
+                            <li><strong>Continent Ridge:</strong> Asia (Japan)</li>
+                            <li><strong>First Ascent:</strong> 663 AD (Anonymous Monk)</li>
+                            <li><strong>Geological Type:</strong> Active Stratovolcano</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mountain-info-column">
+                    <span class="mountain-badge" style="background-color: #e76f51; color: white;">Cultural Icon</span>
+                    <h2>Mount Fuji (Fuji-san)</h2>
+                    <p class="mountain-intro-text">
+                        An exceptionally symmetrical stratovolcano located near Tokyo, Mount Fuji is the tallest mountain peak in Japan and a deeply sacred cultural symbol. It has inspired centuries of art, poetry, and spiritual pilgrimage treks.
+                    </p>
+
+                    <div class="mountain-accordion">
+                        <div class="accordion-item">
+                            <button class="accordion-header">Geology & Activity <span>▼</span></button>
+                            <div class="accordion-content">
+                                <p>Fuji sits on a complex triple junction of tectonic plates. Although classified as an active volcano, it has remained completely dormant since its last major historical event, the great Hoei eruption of 1707.</p>
+                            </div>
+                        </div>
+                        <div class="accordion-item">
+                            <button class="accordion-header">The Pilgrimage Climb <span>▼</span></button>
+                            <div class="accordion-content">
+                                <p>Hundreds of thousands of travelers climb Fuji every summer during July and August. Most hikers begin climbing late at night from the 5th Station, reaching the snow-line ridge just in time to witness Goraiko—the famous spiritual sunrise.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+    <!-- Shared Footer -->
+    <footer>
+        <div class="container footer-bottom-flex" style="padding: 20px 0; text-align: center;">
+            <p>&copy; 2026 PeakVista. Crafted with passion for the wilderness.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

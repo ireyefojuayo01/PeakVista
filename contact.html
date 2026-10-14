@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us | PeakVista</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header (Exact same as your previous pages) -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <img src="images/logo.png" alt="Mountain Logo">
+                </a>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="trails.html">Trails</a></li>
+                    <li><a href="mountain.html">Mountain</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html" class="active">Contact</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <a href="trails.html" class="btn">Explore</a>
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Subpage Banner Header -->
+    <section class="subpage-hero bg-contact-hero">
+        <div class="subpage-overlay"></div>
+        <div class="subpage-hero-content">
+            <h1>Get In Touch</h1>
+            <p>Have questions about a trail, route logistics, or gear suggestions? Drop us a line.</p>
+        </div>
+    </section>
+
+    <!-- Contact Form & Info Grid Section -->
+    <section class="contact-section">
+        <div class="container">
+            <div class="contact-grid">
+                
+                <!-- Column 1: Info Side Panel -->
+                <div class="contact-info-panel">
+                    <span class="contact-badge">Basecamp Links</span>
+                    <h2>Let's Connect</h2>
+                    <p class="contact-desc">
+                        Our project team is always looking to collaborate on trail expansions, geological facts, and wilderness mapping updates.
+                    </p>
+                    
+                    <div class="contact-details-list">
+                        <div class="detail-item">
+                            <span class="detail-icon">✉️</span>
+                            <div>
+                                <h4>Email Basecamp</h4>
+                                <p>explore@peakvista.com</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📍</span>
+                            <div>
+                                <h4>HQ Coordinates</h4>
+                                <p>Alpine Ridge Sector, Colorado, US</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">⏱️</span>
+                            <div>
+                                <h4>Active Hours</h4>
+                                <p>Mon - Fri: 08:00 AM - 05:00 PM</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Column 2: Working Interaction Form -->
+                <div class="contact-form-wrapper">
+                    <form class="contact-form" id="peakContactForm" onsubmit="event.preventDefault(); alert('Message successfully logged into PeakVista basecamp!');">
+                        <div class="form-group">
+                            <label for="userName">Full Name</label>
+                            <input type="text" id="userName" placeholder="Your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="userEmail">Email Address</label>
+                            <input type="email" id="userEmail" placeholder="yourname@email.com" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="messageSubject">Subject</label>
+                            <input type="text" id="messageSubject" placeholder="Trail feedback, partnership, question..." required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="userMessage">Message / Exploration Question</label>
+                            <textarea id="userMessage" rows="5" placeholder="Write your message here..." required></textarea>
+                        </div>
+
+                        <button type="submit" class="btn submit-btn">Send Expedition Log</button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Shared Footer -->
+    <footer>
+        <div class="container footer-bottom-flex" style="padding: 20px 0; text-align: center;">
+            <p>&copy; 2026 PeakVista. Crafted with passion for the wilderness.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

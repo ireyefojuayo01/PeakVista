@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IFT 223 — CBT Practice</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A0E1F;
+    --bg2:#0F1530;
+    --card:#131A33;
+    --card-border:#232C55;
+    --lime:#D4FF3F;
+    --cyan:#31E1F7;
+    --green:#22FF8B;
+    --red:#FF3B5C;
+    --text:#EAF0FF;
+    --muted:#8B96C4;
+    --amber:#FFC53D;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:
+      radial-gradient(circle at 12% 8%, rgba(212,255,63,0.07), transparent 40%),
+      radial-gradient(circle at 88% 92%, rgba(49,225,247,0.08), transparent 40%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    min-height:100vh;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 60px;}
+
+  /* ===== HEADER BAR (CBT strip) ===== */
+  .cbt-bar{
+    display:flex;align-items:center;justify-content:space-between;
+    background:linear-gradient(90deg,#151C3B,#0F1530);
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    padding:12px 18px;
+    margin-bottom:22px;
+  }
+  .cbt-bar .brand{
+    font-family:'JetBrains Mono',monospace;
+    font-weight:700;
+    letter-spacing:1px;
+    font-size:13px;
+    color:var(--lime);
+    display:flex;align-items:center;gap:8px;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:pulse 1.6s infinite ease-in-out;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+  .cbt-bar .meta{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);}
+
+  h1{font-family:'Space Grotesk',sans-serif;font-size:28px;margin:0 0 6px;letter-spacing:-0.3px;}
+  .sub{color:var(--muted);font-size:14.5px;margin-bottom:26px;line-height:1.5;}
+
+  /* ===== SELECT SCREEN ===== */
+  .chapter-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:12px;
+    margin-bottom:22px;
+  }
+  .chap-btn{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:10px;
+    padding:14px 16px;
+    cursor:pointer;
+    text-align:left;
+    color:var(--text);
+    transition:border-color .15s, transform .1s, background .15s;
+    font-family:'Inter',sans-serif;
+  }
+  .chap-btn:hover{border-color:var(--cyan);transform:translateY(-1px);background:#161E3D;}
+  .chap-btn.selected{border-color:var(--lime);background:#1A2140;box-shadow:0 0 0 1px var(--lime) inset;}
+  .chap-num{font-family:'JetBrains Mono',monospace;color:var(--cyan);font-size:12px;font-weight:700;}
+  .chap-title{font-size:14px;font-weight:600;margin-top:4px;line-height:1.3;}
+  .chap-count{font-size:12px;color:var(--muted);margin-top:6px;}
+
+  .select-all-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+  .pill-btn{
+    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;
+    background:transparent;border:1px solid var(--card-border);color:var(--muted);
+    padding:8px 14px;border-radius:999px;cursor:pointer;
+  }
+  .pill-btn:hover{border-color:var(--lime);color:var(--lime);}
+
+  .start-btn{
+    display:block;width:100%;
+    background:var(--lime);color:#0A0E1F;
+    font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;
+    border:none;border-radius:10px;padding:16px;cursor:pointer;
+    margin-top:18px;
+    box-shadow:0 0 24px rgba(212,255,63,0.25);
+    transition:transform .1s, box-shadow .15s;
+  }
+  .start-btn:hover{transform:translateY(-1px);box-shadow:0 0 30px rgba(212,255,63,0.4);}
+  .start-btn:disabled{background:#3A4066;color:var(--muted);cursor:not-allowed;box-shadow:none;}
+
+  /* ===== QUIZ SCREEN ===== */
+  .progress-row{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+  .progress-track{flex:1;height:8px;background:var(--card);border-radius:99px;overflow:hidden;border:1px solid var(--card-border);}
+  .progress-fill{height:100%;background:linear-gradient(90deg,var(--lime),var(--cyan));transition:width .25s ease;}
+  .progress-label{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);white-space:nowrap;}
+
+  .qcard{
+    background:var(--card);
+    border:1px solid var(--card-border);
+    border-radius:14px;
+    padding:26px;
+  }
+  .qtag{
+    display:inline-block;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    color:var(--bg);background:var(--cyan);padding:4px 10px;border-radius:6px;margin-bottom:14px;
+  }
+  .qtext{font-family:'Space Grotesk',sans-serif;font-size:19px;line-height:1.4;margin-bottom:20px;}
+
+  .options{display:flex;flex-direction:column;gap:10px;}
+  .opt{
+    display:flex;align-items:center;gap:12px;
+    background:#0F1530;border:1.5px solid var(--card-border);
+    border-radius:10px;padding:14px 16px;
+    cursor:pointer;font-size:15px;
+    transition:border-color .12s, background .12s;
+  }
+  .opt:hover:not(.locked){border-color:var(--cyan);background:#131C42;}
+  .opt .letter{
+    font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;
+    width:26px;height:26px;border-radius:6px;background:#1C2450;color:var(--muted);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .opt.correct{border-color:var(--green);background:rgba(34,255,139,0.09);}
+  .opt.correct .letter{background:var(--green);color:#06210F;}
+  .opt.wrong{border-color:var(--red);background:rgba(255,59,92,0.09);}
+  .opt.wrong .letter{background:var(--red);color:#2A0710;}
+  .opt.locked{cursor:default;}
+  .opt.dim{opacity:.45;}
+
+  .feedback{
+    margin-top:18px;padding:16px 18px;border-radius:10px;
+    font-size:14.5px;line-height:1.55;
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback.correct{background:rgba(34,255,139,0.08);border:1px solid var(--green);}
+  .feedback.wrong{background:rgba(255,59,92,0.08);border:1px solid var(--red);}
+  .feedback .fb-title{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:15px;margin-bottom:6px;}
+  .feedback.correct .fb-title{color:var(--green);}
+  .feedback.wrong .fb-title{color:var(--red);}
+
+  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:22px;}
+  .next-btn{
+    background:var(--lime);color:#0A0E1F;font-family:'Space Grotesk',sans-serif;font-weight:700;
+    border:none;border-radius:9px;padding:13px 26px;cursor:pointer;font-size:15px;
+    display:none;
+  }
+  .next-btn.show{display:inline-block;}
+  .quit-btn{
+    background:transparent;color:var(--muted);border:1px solid var(--card-border);
+    border-radius:9px;padding:13px 18px;cursor:pointer;font-family:'JetBrains Mono',monospace;font-size:12px;
+  }
+  .quit-btn:hover{border-color:var(--red);color:var(--red);}
+
+  /* ===== RESULTS SCREEN ===== */
+  .result-card{background:var(--card);border:1px solid var(--card-border);border-radius:16px;padding:34px;text-align:center;}
+  .score-big{font-family:'Space Grotesk',sans-serif;font-size:56px;font-weight:700;margin:6px 0;}
+  .verdict{
+    font-family:'Space Grotesk',sans-serif;font-size:20px;font-weight:700;
+    padding:14px 18px;border-radius:10px;margin:20px 0;
+  }
+  .verdict.ready{background:rgba(34,255,139,0.1);border:1px solid var(--green);color:var(--green);}
+  .verdict.close{background:rgba(255,197,61,0.1);border:1px solid var(--amber);color:var(--amber);}
+  .verdict.notready{background:rgba(255,59,92,0.1);border:1px solid var(--red);color:var(--red);}
+  .chap-breakdown{text-align:left;margin-top:22px;}
+  .breakdown-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:10px 14px;border-bottom:1px solid var(--card-border);font-size:14px;
+  }
+  .breakdown-row:last-child{border-bottom:none;}
+  .bar-mini{flex:1;height:6px;background:#0F1530;border-radius:99px;margin:0 12px;overflow:hidden;}
+  .bar-mini-fill{height:100%;background:var(--cyan);}
+  .result-actions{display:flex;gap:12px;margin-top:26px;flex-wrap:wrap;justify-content:center;}
+  .action-btn{
+    font-family:'Space Grotesk',sans-serif;font-weight:700;border-radius:9px;padding:13px 22px;
+    cursor:pointer;font-size:14.5px;border:none;
+  }
+  .action-btn.primary{background:var(--lime);color:#0A0E1F;}
+  .action-btn.secondary{background:transparent;color:var(--text);border:1px solid var(--card-border);}
+
+  .hidden{display:none !important;}
+  ::selection{background:var(--lime);color:#0A0E1F;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="cbt-bar">
+    <div class="brand"><span class="dot"></span> IFT 223 · CBT PRACTICE</div>
+    <div class="meta" id="statusMeta">MODE: CHAPTER SELECT</div>
+  </div>
+
+  <!-- ============ SELECT SCREEN ============ -->
+  <div id="selectScreen">
+    <h1>Pick your chapters</h1>
+    <p class="sub">No timer, no pressure — this just tells you where you actually stand. Select one or more chapters, then start. You'll get instant feedback and an explanation after every answer.</p>
+
+    <div class="select-all-row">
+      <button class="pill-btn" onclick="selectAll(true)">SELECT ALL</button>
+      <button class="pill-btn" onclick="selectAll(false)">CLEAR</button>
+    </div>
+
+    <div class="chapter-grid" id="chapterGrid"></div>
+
+    <button class="start-btn" id="startBtn" onclick="startQuiz()" disabled>SELECT AT LEAST ONE CHAPTER</button>
+  </div>
+
+  <!-- ============ QUIZ SCREEN ============ -->
+  <div id="quizScreen" class="hidden">
+    <div class="progress-row">
+      <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-label" id="progressLabel">Q1 / 10</div>
+    </div>
+
+    <div class="qcard">
+      <div class="qtag" id="qChapterTag">CH.1</div>
+      <div class="qtext" id="qText">Question text</div>
+      <div class="options" id="optionsBox"></div>
+      <div class="feedback" id="feedbackBox">
+        <div class="fb-title" id="fbTitle"></div>
+        <div id="fbExplain"></div>
+      </div>
+    </div>
+
+    <div class="nav-row">
+      <button class="quit-btn" onclick="quitToSelect()">← END SESSION</button>
+      <button class="next-btn" id="nextBtn" onclick="nextQuestion()">NEXT QUESTION →</button>
+    </div>
+  </div>
+
+  <!-- ============ RESULTS SCREEN ============ -->
+  <div id="resultScreen" class="hidden">
+    <h1>Session complete</h1>
+    <p class="sub">Here's exactly where you stand right now.</p>
+    <div class="result-card">
+      <div style="font-family:'JetBrains Mono',monospace;color:var(--muted);font-size:13px;">YOUR SCORE</div>
+      <div class="score-big" id="scoreBig">0%</div>
+      <div style="color:var(--muted);font-size:14px;" id="scoreSub">0 / 0 correct</div>
+
+      <div class="verdict" id="verdictBox"></div>
+
+      <div class="chap-breakdown" id="breakdownBox"></div>
+
+      <div class="result-actions">
+        <button class="action-btn secondary" onclick="retrySameChapters()">RETRY THESE CHAPTERS</button>
+        <button class="action-btn primary" onclick="backToSelect()">CHOOSE DIFFERENT CHAPTERS</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ============ QUESTION BANK ============ */
+const CHAPTERS = [
+{id:1, title:"Intro to Systems Analysis & Design", questions:[
+  {q:"What are the five basic elements of a system?", opts:["Input, Processing, Output, Feedback, Control","Data, Info, Knowledge, Wisdom, Action","Plan, Do, Check, Act, Review","Hardware, Software, People, Data, Network"], correct:0, explain:"A system's five basic elements are Input, Processing, Output, Feedback, and Control — inputs are transformed by processing into outputs, while feedback and control keep the system on track toward its goal."},
+  {q:"Which best defines an Information System?", opts:["A computer alone processing data","A collection of people, procedures, hardware, software, networks, and data resources that collect, process, store, and distribute information","A single database","A programming language"], correct:1, explain:"An Information System is broader than just a computer — it's the combination of people, procedures, hardware, software, networks, and data working together to support decision-making and control."},
+  {q:"Which type of IS processes routine daily transactions like payroll and banking?", opts:["DSS","MIS","TPS","ESS"], correct:2, explain:"Transaction Processing Systems (TPS) handle high-volume, routine daily transactions such as sales, payroll, and banking with speed, accuracy, and reliability."},
+  {q:"MIS primarily does what?", opts:["Handles raw transactions directly","Converts TPS data into useful management reports","Provides strategic dashboards for executives only","Assists semi-structured decisions with what-if analysis"], correct:1, explain:"Management Information Systems (MIS) take the data generated by TPS and summarize it into reports (e.g., sales analysis, inventory reports) that support middle management decisions."},
+  {q:"DSS is best described as:", opts:["A system for senior executives only","A system that assists managers in semi-structured decisions using analytical models","A system that integrates all organizational processes","A system that manages customer relationships"], correct:1, explain:"Decision Support Systems (DSS) use analytical models and 'what-if' analysis to help managers make semi-structured decisions, e.g., investment analysis or forecasting."},
+  {q:"How many major components does an information system have?", opts:["4","5","6","7"], correct:2, explain:"An information system has six major components: Hardware, Software, Data, Procedures, Networks, and People."},
+  {q:"Data vs Information — which is correct?", opts:["Data is processed; Information is raw","Data is raw facts; Information is processed, meaningful facts","Data is organized; Information is unorganized","Data is output; Information is input"], correct:1, explain:"Data is raw, unorganized facts (e.g., 50, 65, 80, 75) with little inherent meaning. Information is data that's been processed into something organized and meaningful (e.g., 'Average score = 67.5')."},
+  {q:"Which is NOT listed as a core responsibility of a systems analyst?", opts:["Identifying user requirements","Designing solutions","Manufacturing hardware","Training users"], correct:2, explain:"Systems analysts study problems, gather requirements, design and coordinate solutions, test systems, document, and train users — manufacturing hardware isn't part of the role."}
+]},
+{id:2, title:"Systems Development Life Cycle (SDLC)", questions:[
+  {q:"What does SDLC stand for?", opts:["Software Design Life Cost","Systems Development Life Cycle","System Data Life Control","Structured Development Life Chart"], correct:1, explain:"SDLC = Systems Development Life Cycle, a structured process for planning, designing, developing, testing, implementing, and maintaining information systems."},
+  {q:"What is the correct order of SDLC phases?", opts:["Design→Planning→Analysis→Testing→Dev→Implementation", "Planning→Feasibility→Requirements Analysis→Design→Development→Testing→Implementation→Maintenance","Testing→Design→Planning→Development","Feasibility→Planning→Testing→Design"], correct:1, explain:"The standard SDLC sequence is: Planning → Feasibility Study → Requirements Analysis → System Design → Development → Testing → Implementation → Maintenance."},
+  {q:"Which feasibility type asks 'will benefits exceed costs?'", opts:["Technical","Economic","Legal","Schedule"], correct:1, explain:"Economic feasibility evaluates whether the expected benefits of a project justify its costs, often using cost-benefit analysis or ROI."},
+  {q:"Functional requirements describe:", opts:["How well the system performs","What the system should do","Hardware specs only","Project budget"], correct:1, explain:"Functional requirements describe system operations/behaviors — what the system does (e.g., user login, payment processing). Non-functional requirements describe how well it performs."},
+  {q:"Which changeover method replaces the old system immediately?", opts:["Parallel","Pilot","Direct","Phased"], correct:2, explain:"Direct Changeover replaces the old system immediately with the new one — fast, but high risk if problems occur."},
+  {q:"Parallel changeover's main advantage is:", opts:["Fastest implementation","Lower risk since the old system still runs as a backup","Lowest cost","No training needed"], correct:1, explain:"In Parallel Changeover, old and new systems run simultaneously for a period, reducing risk because the old system acts as a safety net — though it increases operational cost."},
+  {q:"A key disadvantage of SDLC is:", opts:["Too flexible","Time-consuming with high documentation requirements","No documentation produced","Reduces communication among stakeholders"], correct:1, explain:"SDLC's structured approach can be time-consuming, requires significant documentation, may involve high costs, and struggles to accommodate changing requirements."},
+  {q:"The output of the Requirements Analysis phase is typically:", opts:["Project charter","System Requirements Specification (SRS)","Test report","Feasibility report"], correct:1, explain:"Requirements Analysis produces the System Requirements Specification (SRS), which documents the functional and non-functional requirements gathered from users."}
+]},
+{id:3, title:"Alternative System Development Approaches", questions:[
+  {q:"The Waterfall model is best described as:", opts:["Iterative with continuous feedback","Sequential — each phase completed before the next begins","Rapid, reusable-component based","Risk-driven spiral cycles"], correct:1, explain:"Waterfall is a sequential model: Requirements → Design → Development → Testing → Deployment → Maintenance, with each phase completed before moving to the next."},
+  {q:"Which model uses repeated cycles of Planning → Risk Analysis → Engineering → Evaluation?", opts:["Waterfall","Spiral","Incremental","RAD"], correct:1, explain:"The Spiral Model combines iterative development with risk management, cycling through Planning, Risk Analysis, Engineering, and Evaluation until completion."},
+  {q:"A throwaway prototype is:", opts:["Refined into the final system","Developed temporarily and discarded later","Never actually built","The same as an evolutionary prototype"], correct:1, explain:"A Throwaway Prototype is built to clarify requirements and then discarded, unlike an Evolutionary Prototype which is gradually refined into the final system."},
+  {q:"RAD (Rapid Application Development) emphasizes:", opts:["Heavy documentation","Fast development using reusable components and high user involvement","Strict sequential phases","No user involvement"], correct:1, explain:"RAD focuses on rapid development and fast delivery through reusable components, frequent prototyping, and high user participation."},
+  {q:"In Scrum, who represents customer interests?", opts:["Scrum Master","Development Team","Product Owner","Stakeholder Committee"], correct:2, explain:"The Product Owner represents customer/business interests and manages the Product Backlog, while the Scrum Master facilitates the process and the Development Team builds the product."},
+  {q:"A Sprint in Scrum typically lasts:", opts:["6 months","1–4 weeks","1 day","1 year"], correct:1, explain:"A Sprint is a short development cycle lasting approximately 1–4 weeks, ending with a Sprint Review and Sprint Retrospective."},
+  {q:"The XP practice of two developers writing code together is called:", opts:["Pair programming","Sprint review","Big bang integration","Continuous deployment"], correct:0, explain:"Pair programming is a core Extreme Programming (XP) practice, alongside continuous testing, continuous integration, small releases, and simple design."},
+  {q:"DevOps primarily combines:", opts:["Marketing and sales","Software development and IT operations","HR and finance","Design and testing only"], correct:1, explain:"DevOps combines software development and IT operations to improve collaboration and automation, following a Planning → Development → Building → Testing → Release → Deployment → Monitoring flow."}
+]},
+{id:4, title:"Project Planning & Feasibility Analysis", questions:[
+  {q:"The Project Triangle constraints are:", opts:["Time, Cost, Scope (and Quality)","People, Process, Tools","Input, Process, Output","Plan, Do, Review"], correct:0, explain:"Project management is constrained by Time, Cost, Scope, and Quality — often called the Project Triangle."},
+  {q:"WBS stands for:", opts:["Work Benefit Schedule","Work Breakdown Structure","Weighted Budget Summary","Workflow Business System"], correct:1, explain:"A Work Breakdown Structure (WBS) is a hierarchical decomposition of project activities into smaller, manageable tasks."},
+  {q:"The PERT formula for Expected Time (TE) is:", opts:["(O+M+P)/3","(O+4M+P)/6","(O+P)/2","(4O+M+P)/6"], correct:1, explain:"PERT's Expected Time formula is TE = (O + 4M + P) / 6, where O = Optimistic, M = Most Likely, and P = Pessimistic time estimates."},
+  {q:"Using O=4 days, M=8 days, P=16 days, what is TE?", opts:["6 days","8.67 days","9.33 days","10 days"], correct:1, explain:"TE = (4 + 4×8 + 16) / 6 = (4 + 32 + 16) / 6 = 52/6 = 8.67 days."},
+  {q:"The Critical Path is:", opts:["The shortest path with the most slack","The longest path through project activities, determining completion time","Any random path through the network","The path with zero cost"], correct:1, explain:"The Critical Path is the longest sequence of activities determining the minimum project completion time. Activities on it have zero slack — any delay there delays the whole project."},
+  {q:"Activities on the critical path have:", opts:["Maximum slack","Zero slack time","Negative slack","Variable slack"], correct:1, explain:"By definition, critical path activities have zero slack time — no delay is possible without pushing back the project's completion date."},
+  {q:"A Gantt chart's main weakness is:", opts:["It's too simple to read","It doesn't clearly show activity dependencies","It can't show time at all","It requires no data"], correct:1, explain:"While Gantt charts are great for visualizing schedules with horizontal bars, they struggle to show dependencies between activities clearly, especially on large projects."},
+  {q:"If annual savings = $80,000 and implementation cost = $50,000, what is the Net Benefit?", opts:["$130,000","$30,000","$50,000","$80,000"], correct:1, explain:"Net Benefit = Total Benefits − Total Costs = $80,000 − $50,000 = $30,000. Since benefits exceed costs, the project is economically feasible."}
+]},
+{id:5, title:"Requirements Engineering", questions:[
+  {q:"Requirements engineering's main goal is:", opts:["Writing code","Discovering, documenting, analyzing, validating, and managing stakeholder needs","Testing software after release","Installing hardware"], correct:1, explain:"Requirements Engineering (RE) is the systematic process of discovering, documenting, analyzing, validating, and managing stakeholder needs and expectations for a system."},
+  {q:"JAD stands for:", opts:["Joint Application Development","Java Application Design","Justified Analysis Document","Joint Analyst Discussion"], correct:0, explain:"Joint Application Development (JAD) is a structured approach where users, managers, and developers collaborate in facilitated meetings to define system requirements together."},
+  {q:"Which requirements gathering method risks 'observer bias'?", opts:["Questionnaire","Observation","Document review","Brainstorming"], correct:1, explain:"Observation involves watching users perform tasks — while it yields realistic information, it's vulnerable to observer bias and users may alter their behavior when watched."},
+  {q:"In MoSCoW prioritization, 'Must Have' means:", opts:["Desirable but optional","Essential requirement","Postponed for a future release","Important but not critical"], correct:1, explain:"MoSCoW classifies requirements into Must Have (essential), Should Have (important but not critical), Could Have (desirable), and Won't Have (postponed)."},
+  {q:"Non-functional requirements describe:", opts:["What the system does","Quality attributes / how the system performs","Project cost","Stakeholder names"], correct:1, explain:"Non-functional requirements describe quality attributes and operational constraints — e.g., 'the system shall return results within 2 seconds' — as opposed to functional requirements which describe features."},
+  {q:"A closed-ended question example is:", opts:["'What improvements would you like?'","'Do you use online registration? Yes/No'","An open group discussion","A brainstorming session"], correct:1, explain:"Closed-ended questions give respondents predefined response options (like Yes/No), unlike open-ended questions which invite free-form answers."},
+  {q:"Structured interviews use:", opts:["Flexible, open-ended questions","Predetermined, standardized questions","No questions at all","Only group discussion"], correct:1, explain:"Structured interviews use predetermined, standardized questions for consistency and easy analysis, though they offer limited flexibility compared to unstructured interviews."},
+  {q:"Which is an advantage of document analysis?", opts:["Documents are always up to date","Low cost and provides historical information","It removes the need for interviews entirely","It eliminates ambiguity completely"], correct:1, explain:"Document analysis (reviewing forms, reports, manuals) is low-cost and provides historical context, though documents may be outdated or missing key information."}
+]},
+{id:6, title:"Traditional System Modeling Techniques", questions:[
+  {q:"A Context Diagram shows:", opts:["Internal processes in fine detail","The system as one process with external entities and data flows","Database tables only","Only the code structure"], correct:1, explain:"A Context Diagram is a high-level view showing the entire system as a single process, along with the external entities it interacts with and the data flows between them — it does not show internal detail."},
+  {q:"In a DFD, an open-ended rectangle represents:", opts:["Process","External entity","Data store","Data flow"], correct:2, explain:"In a Data Flow Diagram, a Data Store (like a database or file) is represented by an open-ended rectangle. Processes are circles, entities are rectangles, and flows are arrows."},
+  {q:"In an ERD, the diamond symbol represents:", opts:["Entity","Attribute","Relationship","Data flow"], correct:2, explain:"In an Entity Relationship Diagram, entities are rectangles, attributes are ovals, and relationships between entities are shown as diamonds."},
+  {q:"Which example illustrates a Many-to-Many relationship?", opts:["Person → Passport","Department → Students","Students → Courses","Student → StudentID"], correct:2, explain:"Students → Courses is Many-to-Many since a student can take many courses and a course can have many students. Person → Passport is One-to-One; Department → Students is One-to-Many."},
+  {q:"Structured English uses keywords like:", opts:["SELECT, FROM, WHERE","IF, THEN, ELSE, WHILE, DO, ENDIF","CLASS, OBJECT, METHOD","BEGIN, END only"], correct:1, explain:"Structured English describes process logic using plain English combined with programming-style keywords: IF, THEN, ELSE, WHILE, DO, ENDIF."},
+  {q:"Decision Tables are especially useful when:", opts:["There is only one condition","Multiple conditions exist","No conditions exist","Diagrams are strictly preferred"], correct:1, explain:"Decision Tables provide a tabular representation of conditions and actions, making them ideal for handling multiple combined conditions systematically."},
+  {q:"First Normal Form (1NF) requires:", opts:["Removing transitive dependencies","Eliminating repeating groups and ensuring atomic values","Removing partial dependencies","Creating foreign keys"], correct:1, explain:"1NF requires eliminating repeating groups and ensuring each field holds a single, atomic value — e.g., splitting a 'Courses: CSC101, CSC102' cell into separate rows."},
+  {q:"3NF requires satisfying 2NF and additionally:", opts:["Removing repeating groups","Removing partial dependencies","Removing transitive dependencies","Merging all tables into one"], correct:2, explain:"Third Normal Form (3NF) requires satisfying 2NF and removing transitive dependencies — where non-key attributes depend on other non-key attributes rather than directly on the key."}
+]},
+{id:7, title:"Object-Oriented Analysis and Design (OOAD)", questions:[
+  {q:"An object contains:", opts:["Only data","Only methods","Data and methods that operate on that data","Only an identity"], correct:2, explain:"An object is an entity that contains both data (attributes) and methods (operations) that act on that data, representing a real-world entity."},
+  {q:"A class is best described as:", opts:["An instance of an object","A blueprint/template used to create objects","A database table","A type of diagram"], correct:1, explain:"A class is a blueprint or template that defines the attributes and methods shared by objects — objects are the actual instances created from a class."},
+  {q:"Encapsulation is about:", opts:["Inheriting properties from a parent class","Combining data/methods and restricting direct access to internal data","One method behaving differently in different contexts","Hiding all classes from each other"], correct:1, explain:"Encapsulation combines data and methods within a class while restricting direct access to internal data (e.g., a BankAccount's balance is private, accessible only via Deposit()/Withdraw() methods)."},
+  {q:"Method overriding achieves which type of polymorphism?", opts:["Compile-time","Run-time","Static","None of these"], correct:1, explain:"Run-time polymorphism is achieved through method overriding, while compile-time polymorphism is achieved through method overloading."},
+  {q:"'Department has Students' (students can exist independently) is an example of:", opts:["Composition","Aggregation","Dependency","Generalization"], correct:1, explain:"This is Aggregation — a 'has-a' relationship where the parts (Students) can exist independently of the whole (Department)."},
+  {q:"'House contains Rooms' (rooms cease to exist as part of the structure if the house is removed) illustrates:", opts:["Association","Aggregation","Composition","Dependency"], correct:2, explain:"This is Composition — a stronger relationship where the part (Room) depends entirely on the whole (House) and doesn't exist independently."},
+  {q:"Abstraction in OOAD means:", opts:["Showing all implementation details","Hiding unnecessary details while showing essential features","Combining multiple unrelated classes","The same thing as encapsulation"], correct:1, explain:"Abstraction hides unnecessary complexity while exposing only essential functionality — e.g., an ATM shows 'Withdraw money' but hides the database and network processing behind it."},
+  {q:"In 'Vehicle → Car, Vehicle → Motorcycle', the relationship shown is:", opts:["Aggregation","Composition","Generalization (inheritance)","Dependency"], correct:2, explain:"This is Generalization, which represents inheritance relationships — Car and Motorcycle are specialized types (subclasses) of the general Vehicle class."}
+]},
+{id:8, title:"Unified Modeling Language (UML)", questions:[
+  {q:"UML is primarily used to:", opts:["Write source code","Visualize, specify, construct, and document software systems","Manage servers","Design hardware circuits"], correct:1, explain:"UML (Unified Modeling Language) is a standardized graphical language used to visualize, specify, construct, and document object-oriented software systems."},
+  {q:"A Use Case Diagram's actor symbol is a:", opts:["Rectangle","Stick figure","Oval","Diamond"], correct:1, explain:"Actors (users or external systems) are represented by stick figures in a Use Case Diagram; use cases themselves are ovals."},
+  {q:"Which diagram shows interactions among objects over time using lifelines?", opts:["Class diagram","Sequence diagram","Deployment diagram","Package diagram"], correct:1, explain:"A Sequence Diagram shows time-ordered interactions among objects, using lifelines to represent each object's existence and messages to show communication (e.g., Customer → ATM → Bank Database)."},
+  {q:"A Deployment Diagram's 'Node' represents:", opts:["A software class","Hardware devices like servers/clients","A use case","A package"], correct:1, explain:"In a Deployment Diagram, a Node represents physical hardware — such as a Server, Client Computer, or Mobile Device — showing where software components are installed."},
+  {q:"Which of these is a Structural UML diagram?", opts:["Activity","State","Class","Sequence"], correct:2, explain:"Class Diagrams are structural (they show system organization). Activity, State, and Sequence diagrams are all behavioral, showing dynamic actions/interactions."},
+  {q:"Which of these is a Behavioral UML diagram?", opts:["Component","Deployment","Package","Activity"], correct:3, explain:"Activity Diagrams are behavioral — they show workflow processes. Component, Deployment, and Package diagrams are all structural."},
+  {q:"A State Diagram shows:", opts:["Hardware deployment layout","Changes in an object's state over its lifecycle","Class attributes only","System components only"], correct:1, explain:"A State Diagram illustrates how an object's state changes over its lifecycle — e.g., an order moving through Created → Payment Pending → Confirmed → Delivered."},
+  {q:"A Class Diagram typically shows:", opts:["Only class names","Class name, attributes, methods, and relationships","Only methods","Only physical servers"], correct:1, explain:"A Class Diagram shows a class's name, its attributes (properties), its methods (operations), and its relationships (association, aggregation, composition, inheritance, dependency) with other classes."}
+]},
+{id:9, title:"User Interface Design", questions:[
+  {q:"HCI stands for:", opts:["Human-Computer Interaction","High-Complexity Interface","Hardware-Component Integration","Human-Centered Innovation"], correct:0, explain:"Human–Computer Interaction (HCI) is the study, design, and evaluation of interactions between people and computer systems, drawing on computer science, psychology, and design."},
+  {q:"UX (User Experience) focuses mainly on:", opts:["Only visual appearance","A user's overall feelings, perceptions, and satisfaction","Hardware specifications","Server architecture"], correct:1, explain:"UX is broader than visual design — it covers usability, accessibility, visual design, performance, and overall user satisfaction with the system."},
+  {q:"The UI principle where interface elements behave the same throughout the system is:", opts:["Simplicity","Consistency","Feedback","Visibility"], correct:1, explain:"Consistency means interface elements (buttons, colors, navigation) behave and look similar throughout the system, helping users build predictable expectations."},
+  {q:"A wireframe primarily focuses on:", opts:["Final visual polish","Structure and functionality, not appearance","Color schemes","Marketing copy"], correct:1, explain:"Wireframes are simple layouts showing structure and functionality — they intentionally leave out visual polish, which comes later in prototypes/final design."},
+  {q:"A low-fidelity prototype example is:", opts:["A clickable interactive interface","Paper sketches / basic wireframes","A finished production app","A fully coded system"], correct:1, explain:"Low-fidelity prototypes are simple representations like paper sketches or basic wireframes; high-fidelity prototypes are detailed, interactive versions (e.g., clickable interfaces)."},
+  {q:"Responsive design primarily ensures:", opts:["Faster servers","Interfaces adapt automatically to different screen sizes and devices","More colors on screen","Less accessibility"], correct:1, explain:"Responsive design uses flexible layouts, flexible images, and media queries so interfaces automatically adapt to computers, tablets, and smartphones."},
+  {q:"Which is a visual accessibility consideration?", opts:["Captions","Keyboard navigation","Large text and color contrast","Simple language"], correct:2, explain:"Visual accessibility covers things like large text, color contrast, and screen reader compatibility. Captions address hearing accessibility; keyboard navigation addresses physical accessibility."},
+  {q:"The 'Think-Aloud' method is a technique used in:", opts:["Database design","Usability testing","Network configuration","Risk management"], correct:1, explain:"In the Think-Aloud method, users explain their thoughts out loud while using a system — one of several usability testing methods, alongside observation and A/B testing."}
+]},
+{id:10, title:"Open Source Software", questions:[
+  {q:"Open Source Software is defined by:", opts:["Code hidden from users","Source code publicly available for use, modification, and redistribution","Always being paid software","Only being used by governments"], correct:1, explain:"Open Source Software (OSS) makes its source code publicly available so users can study, modify, and redistribute it under specified licenses."},
+  {q:"Which license requires derivative works to remain open source?", opts:["MIT","BSD","GPL","Apache"], correct:2, explain:"The GNU General Public License (GPL) requires that modified/derivative software also remain open source, unlike the more permissive MIT, BSD, or Apache licenses."},
+  {q:"'git clone' is used to:", opts:["Save changes","Download/copy a repository","Delete a repository","View status"], correct:1, explain:"'git clone' downloads a copy of a repository. 'git commit' saves changes, 'git status' views current state, and there's no built-in delete command in the list given."},
+  {q:"GitHub's Pull Request feature allows:", opts:["Automatic deployment only","Review of changes before merging","Deleting repositories","Hosting hardware"], correct:1, explain:"Pull Requests let team members review proposed code changes before they're merged into the main codebase — a core GitHub collaboration feature."},
+  {q:"Linux is best described as:", opts:["A proprietary database","An open-source operating system based on Unix principles","A web scripting language","A JavaScript runtime"], correct:1, explain:"Linux is an open-source operating system based on Unix principles, widely used in servers, cloud computing, and embedded systems."},
+  {q:"MySQL is:", opts:["A programming language","An open-source relational database management system","A web server","A version control system"], correct:1, explain:"MySQL is an open-source relational database management system known for high performance, scalability, and multi-user access."},
+  {q:"Node.js is notable for its:", opts:["Client-side only design","Event-driven architecture for server-side JavaScript","Being a database","Being a hardware device"], correct:1, explain:"Node.js is a JavaScript runtime environment for server-side applications, known for its event-driven architecture and fast, scalable execution."},
+  {q:"A key advantage of OSS is:", opts:["Guaranteed dedicated official support","Security through transparency — many contributors can find and fix flaws","Always being more expensive","Always being proprietary"], correct:1, explain:"Because OSS code is open to inspection, many contributors worldwide can identify and fix security vulnerabilities — this is 'security through transparency.'"}
+]},
+{id:11, title:"Component-Based Software Development (CBSD)", questions:[
+  {q:"CBSD emphasizes building systems by:", opts:["Writing everything from scratch","Assembling reusable software components","Avoiding all reuse","Using one big monolithic module"], correct:1, explain:"Component-Based Software Development builds systems by assembling reusable, self-contained software components rather than building every function independently."},
+  {q:"A key characteristic of software components is:", opts:["Tight coupling","Reusability and standardized interfaces","No encapsulation","Hard dependency on other components"], correct:1, explain:"Software components are characterized by Reusability, Replaceability, Independence, Encapsulation, and Standardized Interfaces — they communicate through well-defined interfaces."},
+  {q:"Middleware's main function is:", opts:["Writing user interfaces","Acting as intermediary facilitating communication between applications, OS, and databases","Replacing databases entirely","Designing hardware"], correct:1, explain:"Middleware sits between applications, operating systems, and databases, facilitating communication, data management, security, and transaction management."},
+  {q:"Black-box reuse means:", opts:["Components modified before reuse","Components used without modification","Building new components from scratch","Discarding old components"], correct:1, explain:"Black-Box Reuse means using a component exactly as-is, without modification — as opposed to White-Box Reuse, where the component is modified before reuse."},
+  {q:"A software framework (e.g., Django, Laravel) provides:", opts:["Hardware only","A reusable, structured collection of components/libraries/tools for development","Only documentation","Only a database engine"], correct:1, explain:"A software framework is a reusable collection of components, libraries, and tools providing a predefined structure for application development — examples include Django, Laravel, and Spring."},
+  {q:"A major challenge of CBSD is:", opts:["Too little reuse happening","Integration and compatibility problems between components","It being impossible to scale","No third-party risk"], correct:1, explain:"CBSD's key challenges include integration problems, compatibility issues across different technologies, security risks from third-party components, and dependency/version management problems."},
+  {q:"In component architecture, 'Connectors' refer to:", opts:["Functional units of the system","Mechanisms that support interactions among components","Configuration files only","Hardware cables"], correct:1, explain:"Connectors are mechanisms that support interactions among components, part of the broader component architecture that also includes Components, Interfaces, and Configuration."},
+  {q:"Layered architecture typically separates a system into:", opts:["Presentation, business logic, and data layers","Only front-end and back-end","One single layer","Hardware and software only"], correct:0, explain:"Layered Architecture arranges components into layers — typically Presentation, Business Logic, and Data layers — each handling a distinct responsibility."}
+]},
+{id:12, title:"Service-Oriented Architecture (SOA)", questions:[
+  {q:"SOA emphasizes:", opts:["Tight coupling and monoliths","Loose coupling, reusability, and interoperability","No communication protocols","Hardware-only design"], correct:1, explain:"SOA is a design approach emphasizing loose coupling, reusability, interoperability, modularity, and standardized communication between services."},
+  {q:"In SOA, which component stores information about available services?", opts:["Service Provider","Service Consumer","Service Registry","Communication Infrastructure"], correct:2, explain:"The Service Registry stores service descriptions and locations for discovery purposes (e.g., UDDI), letting consumers find the services they need."},
+  {q:"SOAP messages are formatted using:", opts:["JSON","XML","Plain text only","Binary code"], correct:1, explain:"SOAP (Simple Object Access Protocol) uses XML for message formatting, structured with an Envelope, Header, Body, and Fault section, typically over HTTP."},
+  {q:"REST uses standard HTTP methods; GET is used to:", opts:["Create data","Retrieve data","Delete data","Update data"], correct:1, explain:"In REST, GET retrieves data, POST creates data, PUT updates data, and DELETE removes data."},
+  {q:"Compared to SOA, microservices typically have:", opts:["Larger, enterprise-wide services","Smaller, independently deployable, application-specific services","Shared databases only","No APIs"], correct:1, explain:"Microservices divide applications into smaller, independently deployable services (often with their own databases), whereas SOA tends toward larger, enterprise-wide services communicating via an enterprise service bus."},
+  {q:"A key characteristic of services in SOA is Statelessness, meaning:", opts:["Services store all client state permanently","Services usually avoid storing client state between requests","Services can never be reused","Services must always run on one server"], correct:1, explain:"Statelessness means services generally don't retain client state information between requests, which supports scalability and reliability in distributed systems."},
+  {q:"PaaS (Platform as a Service) provides:", opts:["Complete ready-to-use software apps","Development environments, tools, and middleware","Only virtual machines","Only storage"], correct:1, explain:"PaaS provides development environments, databases, and middleware for building applications — distinct from IaaS (raw infrastructure) and SaaS (finished applications)."},
+  {q:"A major challenge of SOA implementation is:", opts:["Being too simple to manage","Complexity in managing large systems and governance","Having no security concerns","Zero initial cost"], correct:1, explain:"SOA implementation challenges include complexity in managing distributed systems, security risks, performance/network delays, service management difficulty, high initial cost, and governance problems maintaining standards."}
+]},
+{id:13, title:"System Testing & Quality Assurance", questions:[
+  {q:"Unit testing focuses on:", opts:["The entire integrated system","Individual components/functions in isolation","User acceptance only","Hardware installation"], correct:1, explain:"Unit testing evaluates individual components (functions, methods, classes) in isolation, usually performed and often automated by developers."},
+  {q:"Which integration approach tests higher-level modules first, using stubs?", opts:["Bottom-Up","Top-Down","Big Bang","Regression"], correct:1, explain:"Top-Down Integration starts with higher-level modules and works downward, using temporary 'stub' modules to simulate lower-level components not yet integrated."},
+  {q:"Beta testing is conducted by:", opts:["Developers only, in a controlled environment","Real users in actual, real-world environments","No one — it's automated","Hardware engineers only"], correct:1, explain:"Beta testing is performed by real users under real-world conditions, while Alpha testing happens at the developer's site in a controlled environment."},
+  {q:"Regression testing's purpose is to:", opts:["Test the system for the very first time","Ensure new changes haven't broken existing functionality","Skip previously tested features","Replace unit testing entirely"], correct:1, explain:"Regression testing re-runs previous test cases after changes (new features, bug fixes) to make sure existing functionality still works correctly."},
+  {q:"Stress testing evaluates:", opts:["Performance under expected normal load","Performance beyond normal operating conditions","Only database size","Documentation quality"], correct:1, explain:"Stress testing pushes the system beyond normal operating conditions (e.g., testing with 100,000 users) to see how it behaves under extreme load, unlike Load Testing which uses expected workload."},
+  {q:"Quality Assurance (QA) is best described as:", opts:["Reactive, product-oriented, detects defects","Proactive, process-oriented, prevents defects","The exact same thing as QC","Irrelevant to software quality"], correct:1, explain:"QA is proactive and process-oriented, focused on preventing defects through better development processes. QC is reactive and product-oriented, focused on detecting defects that already exist."},
+  {q:"In the bug life cycle, after 'Fixed' the next typical stage is:", opts:["New","Retest","Assigned","Rejected only"], correct:1, explain:"The bug life cycle flows: New → Assigned → Open → Fixed → Retest → Closed (with possible alternate states like Reopened, Deferred, or Rejected)."},
+  {q:"SQL Injection is an example of a:", opts:["Performance testing type","Security threat","UI design principle","Maintenance type"], correct:1, explain:"SQL Injection is a common security threat where malicious commands are used to manipulate a database — something security testing aims to detect and prevent."}
+]},
+{id:14, title:"System Implementation and Maintenance", questions:[
+  {q:"Which changeover method has the highest risk if problems occur?", opts:["Parallel","Pilot","Direct","Phased"], correct:2, explain:"Direct Changeover replaces the old system immediately with no backup running in parallel, making it the fastest but also the highest-risk implementation method."},
+  {q:"Corrective maintenance addresses:", opts:["New environmental changes","Fixing existing errors/defects after deployment","Improving usability only","Preventing all future problems"], correct:1, explain:"Corrective maintenance is a reactive process that fixes faults and defects discovered after the system has been deployed."},
+  {q:"Adaptive maintenance is triggered by:", opts:["Bugs found in the code","Environmental changes like new OS, regulations, or hardware","User complaints about the UI only","Random updates with no cause"], correct:1, explain:"Adaptive maintenance modifies systems to accommodate environmental changes — e.g., updating tax software for new laws, or adjusting an app for new hardware."},
+  {q:"Perfective maintenance mainly aims to:", opts:["Fix critical bugs","Improve performance, usability, or add new features","Comply with new laws","Prevent hardware failure"], correct:1, explain:"Perfective maintenance improves system performance and usability — e.g., improving the UI, increasing processing speed, or adding new features."},
+  {q:"Which is an example of preventive maintenance?", opts:["Fixing a payroll calculation bug","Code restructuring/database optimization to reduce future risk","Updating tax software for a new law","Adding a new UI feature"], correct:1, explain:"Preventive maintenance proactively reduces future risks — e.g., restructuring code or optimizing a database before problems arise, rather than reacting to an existing issue."},
+  {q:"Post-Implementation Review (PIR) mainly assesses:", opts:["Source code style","Whether project objectives were achieved and lessons for future projects","Only hardware specs","Marketing strategy"], correct:1, explain:"PIR is a formal assessment after deployment that examines system performance, user satisfaction, costs, benefits, and problems encountered — to confirm success and improve future projects."},
+  {q:"Which is a type of documentation aimed at end users?", opts:["Technical documentation","User documentation","Operational documentation","Source code comments only"], correct:1, explain:"User Documentation (manuals, operating instructions, FAQs) is aimed at end users, while Technical Documentation targets developers and Operational Documentation targets administrators."},
+  {q:"A common challenge of data conversion is:", opts:["Too much documentation","Data inconsistency, missing values, and duplicate records","Excessive training","Too many stakeholders"], correct:1, explain:"Data conversion (moving data from an old system to a new one) commonly faces challenges like data inconsistency, missing values, duplicate records, and format incompatibility."}
+]},
+{id:15, title:"Emerging Trends in Systems Analysis and Design", questions:[
+  {q:"Machine Learning is best described as:", opts:["Identical to AI","A subset of AI that learns patterns from data to improve without explicit programming","Unrelated to AI","Only used in robotics"], correct:1, explain:"Machine Learning is a branch (subset) of AI that enables systems to learn patterns from data and improve performance without being explicitly programmed for every rule."},
+  {q:"SaaS (Software as a Service) provides:", opts:["Virtual machines only","Ready-to-use software applications","Raw storage only","Hardware devices"], correct:1, explain:"SaaS delivers complete, ready-to-use software applications over the internet (e.g., online email, cloud office apps) — distinct from IaaS (infrastructure) and PaaS (development platforms)."},
+  {q:"A defining characteristic of blockchain is:", opts:["Centralized control","Immutability — records are hard to alter once stored","No cryptography used","Requiring no ledger"], correct:1, explain:"Blockchain is characterized by Decentralization, Transparency, Immutability (records can't easily be altered once stored), and Security through cryptographic methods."},
+  {q:"The five Vs of Big Data include Volume, Velocity, Variety, Veracity and:", opts:["Value","Vision","Verification","Volatility"], correct:0, explain:"The five Vs of Big Data are Volume (amount), Velocity (speed of generation), Variety (data types), Veracity (reliability), and Value (usefulness of information)."},
+  {q:"Ransomware is a threat where:", opts:["Attackers demand payment to restore access","Systems automatically update themselves","Data is backed up safely","Code is open-sourced"], correct:0, explain:"Ransomware is malicious software where attackers demand payment (a ransom) to restore access to a system or its data — one of the common cyber threats alongside malware, phishing, and DoS attacks."},
+  {q:"No-code platforms are designed mainly for:", opts:["Expert programmers only","Users with little/no programming knowledge, via graphical interfaces","Hardware engineers","Database administrators exclusively"], correct:1, explain:"No-code platforms let users with little or no programming knowledge build applications through graphical, drag-and-drop interfaces — useful for workflow automation and simple business apps."},
+  {q:"IoT primarily refers to:", opts:["A single powerful computer","A network of physical devices connected via the internet, exchanging data","A programming language","A testing method"], correct:1, explain:"The Internet of Things (IoT) is a network of physical devices (sensors, smart devices) connected through the internet that collect and exchange data — e.g., smart homes, medical monitors."},
+  {q:"Digital transformation refers to:", opts:["Removing all technology from an organization","Integrating digital technologies into organizational activities/processes to change how value is delivered","Only building a website","A type of hardware upgrade"], correct:1, explain:"Digital transformation is the integration of digital technologies into organizational processes, changing how organizations operate and deliver value — e.g., online banking, digital healthcare, e-learning."}
+]}
+];
+
+/* ============ STATE ============ */
+let selectedChapters = new Set();
+let quizQuestions = [];
+let currentIndex = 0;
+let score = 0;
+let answered = false;
+let chapterResults = {}; // {chapterId: {correct, total, title}}
+let lastRunChapterIds = [];
+
+/* ============ SELECT SCREEN ============ */
+function renderChapterGrid(){
+  const grid = document.getElementById('chapterGrid');
+  grid.innerHTML = '';
+  CHAPTERS.forEach(ch=>{
+    const btn = document.createElement('div');
+    btn.className = 'chap-btn' + (selectedChapters.has(ch.id) ? ' selected' : '');
+    btn.onclick = ()=>toggleChapter(ch.id);
+    btn.innerHTML = `<div class="chap-num">CHAPTER ${ch.id}</div>
+      <div class="chap-title">${ch.title}</div>
+      <div class="chap-count">${ch.questions.length} questions</div>`;
+    grid.appendChild(btn);
+  });
+  updateStartBtn();
+}
+
+function toggleChapter(id){
+  if(selectedChapters.has(id)) selectedChapters.delete(id);
+  else selectedChapters.add(id);
+  renderChapterGrid();
+}
+
+function selectAll(all){
+  selectedChapters = new Set(all ? CHAPTERS.map(c=>c.id) : []);
+  renderChapterGrid();
+}
+
+function updateStartBtn(){
+  const btn = document.getElementById('startBtn');
+  if(selectedChapters.size === 0){
+    btn.disabled = true;
+    btn.textContent = 'SELECT AT LEAST ONE CHAPTER';
+  } else {
+    const total = CHAPTERS.filter(c=>selectedChapters.has(c.id)).reduce((s,c)=>s+c.questions.length,0);
+    btn.disabled = false;
+    btn.textContent = `START TEST — ${total} QUESTIONS`;
+  }
+}
+
+function shuffle(arr){
+  const a = [...arr];
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startQuiz(){
+  lastRunChapterIds = [...selectedChapters];
+  quizQuestions = [];
+  chapterResults = {};
+  CHAPTERS.forEach(ch=>{
+    if(selectedChapters.has(ch.id)){
+      chapterResults[ch.id] = {correct:0, total:0, title:ch.title};
+      ch.questions.forEach(q=>{
+        quizQuestions.push({...q, chapterId:ch.id, chapterTitle:ch.title});
+      });
+    }
+  });
+  quizQuestions = shuffle(quizQuestions);
+  currentIndex = 0;
+  score = 0;
+  document.getElementById('selectScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.add('hidden');
+  document.getElementById('quizScreen').classList.remove('hidden');
+  document.getElementById('statusMeta').textContent = 'MODE: TESTING';
+  renderQuestion();
+}
+
+/* ============ QUIZ SCREEN ============ */
+function renderQuestion(){
+  answered = false;
+  const q = quizQuestions[currentIndex];
+  document.getElementById('qChapterTag').textContent = 'CH.' + q.chapterId;
+  document.getElementById('qText').textContent = q.q;
+
+  const pct = Math.round((currentIndex)/quizQuestions.length*100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = `Q${currentIndex+1} / ${quizQuestions.length}`;
+
+  const box = document.getElementById('optionsBox');
+  box.innerHTML = '';
+  const letters = ['A','B','C','D'];
+  q.opts.forEach((opt, i)=>{
+    const el = document.createElement('div');
+    el.className = 'opt';
+    el.innerHTML = `<div class="letter">${letters[i]}</div><div>${opt}</div>`;
+    el.onclick = ()=>selectOption(i, el);
+    box.appendChild(el);
+  });
+
+  document.getElementById('feedbackBox').className = 'feedback';
+  document.getElementById('nextBtn').classList.remove('show');
+}
+
+function selectOption(i, el){
+  if(answered) return;
+  answered = true;
+  const q = quizQuestions[currentIndex];
+  const allOpts = document.querySelectorAll('#optionsBox .opt');
+  allOpts.forEach((o, idx)=>{
+    o.classList.add('locked');
+    if(idx === q.correct) o.classList.add('correct');
+    if(idx !== q.correct && idx !== i) o.classList.add('dim');
+  });
+
+  const isCorrect = i === q.correct;
+  if(!isCorrect) el.classList.add('wrong');
+
+  chapterResults[q.chapterId].total++;
+  if(isCorrect){
+    score++;
+    chapterResults[q.chapterId].correct++;
+  }
+
+  const fb = document.getElementById('feedbackBox');
+  fb.className = 'feedback show ' + (isCorrect ? 'correct' : 'wrong');
+  document.getElementById('fbTitle').textContent = isCorrect ? "✓ Correct" : "✗ Not quite";
+  document.getElementById('fbExplain').textContent = q.explain;
+
+  document.getElementById('nextBtn').classList.add('show');
+  document.getElementById('nextBtn').textContent = (currentIndex === quizQuestions.length-1) ? 'SEE RESULTS →' : 'NEXT QUESTION →';
+}
+
+function nextQuestion(){
+  currentIndex++;
+  if(currentIndex >= quizQuestions.length){
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function quitToSelect(){
+  if(currentIndex > 0 || answered){
+    if(!confirm('End this session early? Your progress on this attempt will be lost.')) return;
+  }
+  document.getElementById('quizScreen').classList.add('hidden');
+  document.getElementById('selectScreen').classList.remove('hidden');
+  document.getElementById('statusMeta').textContent = 'MODE: CHAPTER SELECT';
+}
+
+/* ============ RESULTS SCREEN ============ */
+function showResults(){
+  document.getElementById('quizScreen').classList.add('hidden');
+  document.getElementById('resultScreen').classList.remove('hidden');
+  document.getElementById('statusMeta').textContent = 'MODE: RESULTS';
+
+  const pct = Math.round((score/quizQuestions.length)*100);
+  document.getElementById('scoreBig').textContent = pct + '%';
+  document.getElementById('scoreBig').style.color = pct>=75 ? 'var(--green)' : (pct>=50 ? 'var(--amber)' : 'var(--red)');
+  document.getElementById('scoreSub').textContent = `${score} / ${quizQuestions.length} correct`;
+
+  const verdictBox = document.getElementById('verdictBox');
+  let verdictClass, verdictText;
+  if(pct >= 80){
+    verdictClass = 'ready';
+    verdictText = "You're exam-ready on this material. Keep this sharp — a quick review the morning of the exam is all you need.";
+  } else if(pct >= 55){
+    verdictClass = 'close';
+    verdictText = "Getting there — not quite exam-ready yet. Revisit the weak chapters below in your answer key, then retry.";
+  } else {
+    verdictClass = 'notready';
+    verdictText = "Not ready yet. Go back to the answer key for these chapters before your next attempt — don't walk into the exam like this.";
+  }
+  verdictBox.className = 'verdict ' + verdictClass;
+  verdictBox.textContent = verdictText;
+
+  const breakdown = document.getElementById('breakdownBox');
+  breakdown.innerHTML = '<div style="font-family:\\'JetBrains Mono\\',monospace;font-size:12px;color:var(--muted);margin-bottom:8px;">BY CHAPTER</div>';
+  Object.keys(chapterResults).forEach(id=>{
+    const r = chapterResults[id];
+    if(r.total === 0) return;
+    const p = Math.round((r.correct/r.total)*100);
+    const row = document.createElement('div');
+    row.className = 'breakdown-row';
+    row.innerHTML = `<div style="width:160px;flex-shrink:0;">Ch.${id} — ${r.correct}/${r.total}</div>
+      <div class="bar-mini"><div class="bar-mini-fill" style="width:${p}%; background:${p>=75?'var(--green)':p>=50?'var(--amber)':'var(--red)'}"></div></div>
+      <div style="font-family:'JetBrains Mono',monospace;width:40px;text-align:right;">${p}%</div>`;
+    breakdown.appendChild(row);
+  });
+}
+
+function retrySameChapters(){
+  selectedChapters = new Set(lastRunChapterIds);
+  startQuiz();
+}
+
+function backToSelect(){
+  document.getElementById('resultScreen').classList.add('hidden');
+  document.getElementById('selectScreen').classList.remove('hidden');
+  document.getElementById('statusMeta').textContent = 'MODE: CHAPTER SELECT';
+}
+
+/* ============ INIT ============ */
+renderChapterGrid();
+</script>
+</body>
+</html>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | PeakVista</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header (Exact same as your homepage) -->
+    <header>
+        <div class="container">
+            <nav>
+                <!-- Logo -->
+                <a href="index.html" class="logo">
+                    <img src="images/logo.png" alt="Mountain Logo">
+                </a>
+
+                <!-- Navigation Links (Updated target paths to real files) -->
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="trails.html">Trails</a></li>
+                    <li><a href="mountain.html">Mountain</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+
+                <!-- CTA Button and mobile hamburger button container -->
+                <div class="nav-actions">
+                    <a href="trails.html" class="btn">Explore</a>
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Subpage Banner Header -->
+    <section class="subpage-hero bg-about-hero">
+        <div class="subpage-overlay"></div>
+        <div class="subpage-hero-content">
+            <h1>Our Story</h1>
+            <p>Sourcing global peak breakdowns and authentic trail datasets for outdoor lovers.</p>
+        </div>
+    </section>
+
+    <!-- Core About Us Section Layout Grid -->
+    <section class="about-section">
+        <div class="container">
+            <div class="about-grid">
+                
+               <!-- Graphic Visual Frame Stack -->
+<div class="about-images-wrapper" id="aboutImageStack">
+    <div class="about-img-frame main-frame featured">
+        <img src="IMAGES/mountain 4.jpg" alt="Mountaineer on summit">
+    </div>
+    <div class="about-img-frame secondary-frame hidden">
+        <img src="IMAGES/snow mountain.jpg" alt="Snowy ridge line">
+    </div>
+</div>
+
+
+                <!-- Text Copy Content Block -->
+                <div class="about-content">
+                    <span class="about-tag">Our Mission</span>
+                    <h2>Inspiring Every Climber to Reach New Altitudes</h2>
+                    <p class="about-lead">
+                        PeakVista was born out of a profound reverence for the high places of our world and a desire to make alpine exploration safe, accessible, and deeply engaging.
+                    </p>
+                    <p>
+                        We believe that mountains have the power to transform us. Our project brings together geography buffs, casual weekend hikers, and extreme mountaineers into one shared digital basecamp. We source factual data, map out hidden wilderness trails, and celebrate the pure artistry of alpine landscapes.
+                    </p>
+                    
+                    <!-- Core Values Pillars -->
+                    <div class="about-pillars">
+                        <div class="pillar-item">
+                            <div class="pillar-icon">🏔️</div>
+                            <div>
+                                <h4>Authentic Discovery</h4>
+                                <p>Providing verified, highly accurate trail breakdowns and geographic data points.</p>
+                            </div>
+                        </div>
+                        <div class="pillar-item">
+                            <div class="pillar-icon">🌲</div>
+                            <div>
+                                <h4>Leave No Trace</h4>
+                                <p>Promoting sustainable outdoor recreation to keep our wilderness pristine.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Modern Site Footer (Exact same as homepage) -->
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-brand">
+                <a href="index.html" class="logo">
+                    <img src="images/logo.png" alt="Mountain Logo">
+                </a>
+                <p class="footer-desc">
+                    Elevating your outdoor adventures with beautifully detailed trail breakdowns and epic global peak insights.
+                </p>
+            </div>
+            
+            <div class="footer-nav">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="trails.html">Explore Trails</a></li>
+                    <li><a href="mountain.html">Famous Peaks</a></li>
+                    <li><a href="gallery.html">Photo Gallery</a></li>
+                    <li><a href="contact.html">Get In Touch</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-newsletter">
+                <h4>Join the Expedition</h4>
+                <p>Subscribe to get monthly hiking trail drops and gear recommendations.</p>
+                <form class="subscribe-form" onsubmit="event.preventDefault();">
+                    <input type="email" placeholder="Your email address" required>
+                    <button type="submit">Join</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div class="container footer-bottom-flex">
+                <p>&copy; 2026 PeakVista. Crafted with passion for the wilderness.</p>
+                <div class="footer-legal">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hiking Trails | PeakVista</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Header (Exact same as your previous pages) -->
+    <header>
+        <div class="container">
+            <nav>
+                <a href="index.html" class="logo">
+                    <img src="images/logo.png" alt="Mountain Logo">
+                </a>
+
+                <ul class="nav-links" id="navLinks">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="trails.html" class="active">Trails</a></li>
+                    <li><a href="mountain.html">Mountain</a></li>
+                    <li><a href="gallery.html">Gallery</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+
+                <div class="nav-actions">
+                    <a href="trails.html" class="btn">Explore</a>
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Subpage Banner Header -->
+    <section class="subpage-hero bg-trails-hero">
+        <div class="subpage-overlay"></div>
+        <div class="subpage-hero-content">
+            <h1>Find Your Next Adventure</h1>
+            <p>Explore curated trail maps, difficulty rankings, and essential trek details.</p>
+        </div>
+    </section>
+
+    <!-- Trails Explorer Section -->
+    <section class="trails-section">
+        <div class="container">
+            
+            <!-- Dynamic Filter Bar Placeholder -->
+            <div class="filter-bar">
+                <input type="text" placeholder="Search trails by name..." id="trailSearch">
+                <div class="filter-buttons">
+                    <button class="filter-btn active">All</button>
+                    <button class="filter-btn">Easy</button>
+                    <button class="filter-btn">Moderate</button>
+                    <button class="filter-btn">Hard</button>
+                </div>
+            </div>
+
+            <!-- Trails Card Directory Grid -->
+            <div class="trails-grid">
+                
+                <!-- Trail Card 1 -->
+                <div class="trail-card">
+                    <div class="card-img-wrapper">
+                        <img src="IMAGES/alpine lake.jpg" alt="Emerald Lake Trail">
+                        <span class="difficulty-tag easy">Easy</span>
+                    </div>
+                    <div class="trail-card-body">
+                        <h3>Emerald Lake Trail</h3>
+                        <p class="trail-location">📍 Rocky Mountain Range</p>
+                        <p class="trail-excerpt">A peaceful walk through dense pine forests opening up to a stunning, crystal-clear alpine water basin.</p>
+                        <div class="trail-meta">
+                            <span>📏 5.2 km</span>
+                            <span>⏱️ 2h 15m</span>
+                        </div>
+                        <a href="#" class="btn card-btn">View Route Details</a>
+                    </div>
+                </div>
+
+                <!-- Trail Card 2 -->
+                <div class="trail-card">
+                    <div class="card-img-wrapper">
+                        <img src="IMAGES/mountain 2.jpg" alt="Skyline Ridge Ridge">
+                        <span class="difficulty-tag moderate">Moderate</span>
+                    </div>
+                    <div class="trail-card-body">
+                        <h3>Skyline Ridge Loop</h3>
+                        <p class="trail-location">📍 Cascade Meadows</p>
+                        <p class="trail-excerpt">Features breathtaking panoramic vistas along an exposed ridge. Moderate elevation climbs keep it exciting.</p>
+                        <div class="trail-meta">
+                            <span>📏 10.4 km</span>
+                            <span>⏱️ 4h 30m</span>
+                        </div>
+                        <a href="#" class="btn card-btn">View Route Details</a>
+                    </div>
+                </div>
+
+                <!-- Trail Card 3 -->
+                <div class="trail-card">
+                    <div class="card-img-wrapper">
+                        <img src="IMAGES/snow mountain.jpg" alt="Glacier Pass Peak">
+                        <span class="difficulty-tag hard">Hard</span>
+                    </div>
+                    <div class="trail-card-body">
+                        <h3>Glacier Pass Peak</h3>
+                        <p class="trail-location">📍 Northern Alpine Crest</p>
+                        <p class="trail-excerpt">A grueling, highly rewarding steep scramble up glacial rock moraines. Cold weather gear is required.</p>
+                        <div class="trail-meta">
+                            <span>📏 14.1 km</span>
+                            <span>⏱️ 7h 00m</span>
+                        </div>
+                        <a href="#" class="btn card-btn">View Route Details</a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Shared Footer Bar (Exact same as home) -->
+    <footer>
+        <!-- (Keeping this consistent with your home page footer content structural links) -->
+        <div class="container footer-bottom-flex" style="padding: 20px 0; text-align: center;">
+            <p>&copy; 2026 PeakVista. Crafted with passion for the wilderness.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
