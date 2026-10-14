@@ -54,7 +54,7 @@ You need [Git](https://git-scm.com/) to clone the repository. No other dependenc
    ├── style.css
    ├── script.js
    ├── IMAGES/
-   │   ├── logo.png            <- replace with actual filenames
+   │   ├── logo.png            
    │   ├── mountain 1.png
    │   ├── mountain 2.png
    │   └── ...
